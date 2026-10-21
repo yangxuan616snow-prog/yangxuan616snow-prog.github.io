@@ -214,8 +214,10 @@ function buildStickers() {
     el.dataset.id = pick.id;
     el.setAttribute('aria-label', pick.name);
     el.innerHTML = `<img src="${pick.img}" alt="" draggable="false" /><span class="stamp" hidden>已喜欢</span>`;
-    el.addEventListener('click', () => {
-      if (!draggedRecently) openPick(pick.id);
+    // 鼠标/触摸的轻点统一由 pointerup 处理；这里的 click 只服务键盘激活
+    // （回车/空格时 e.detail 为 0），避免移动端重复触发或漏触发。
+    el.addEventListener('click', (e) => {
+      if (e.detail === 0 && !draggedRecently) openPick(pick.id);
     });
     pileEl.appendChild(el);
     items.push({ pick, el, body: null, w: 0, h: 0 });
@@ -363,17 +365,26 @@ function setupPointer() {
 
   let down = null;
   pileEl.addEventListener('pointerdown', (e) => {
-    down = { x: e.clientX, y: e.clientY };
+    down = { x: e.clientX, y: e.clientY, target: e.target };
+  });
+  window.addEventListener('pointercancel', () => {
+    down = null;
   });
   window.addEventListener('pointerup', (e) => {
     if (!down) return;
     const moved = Math.hypot(e.clientX - down.x, e.clientY - down.y);
+    const target = down.target;
     down = null;
     // 拖过了就不当成点击，避免拽着贴纸玩的时候误进详情页。
     if (moved >= 8) {
       draggedRecently = true;
       setTimeout(() => (draggedRecently = false), 300);
+      return;
     }
+    // Matter 在 touchstart 里 preventDefault，移动端不会再有合成的 click，
+    // 所以轻点的手指抬起时直接判定一次。
+    const gift = target && target.closest && target.closest('.gift');
+    if (gift && !draggedRecently) openPick(gift.dataset.id);
   });
 
   // 甩出屏幕的贴纸，从上面放回来。
