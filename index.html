@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Huan’s Picks · 欢的种草清单</title>
+  <meta name="description" content="欢的种草清单：都是我真用过、真心推荐的好物。看到心动的，就加入喜欢。" />
+  <meta name="theme-color" content="#FAF7E4" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.loli.net" />
+  <link rel="preconnect" href="https://gstatic.loli.net" crossorigin />
+  <link href="https://fonts.loli.net/css2?family=Bagel+Fat+One&family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 背景笔触 -->
+  <div class="swipes" aria-hidden="true">
+    <span class="swipe swipe-a"></span>
+    <span class="swipe swipe-b"></span>
+    <span class="swipe swipe-c"></span>
+  </div>
+
+  <!-- 顶栏 -->
+  <header class="bar bar-top" id="topbar">
+    <p class="bar-hint">看到心动的，就加入喜欢</p>
+    <p class="bar-count" id="count" aria-live="polite"></p>
+  </header>
+
+  <h1 class="hero" id="hero" aria-label="Huan’s Picks">
+    <span class="hero-line">Huan’s</span>
+    <span class="hero-line">Picks</span>
+  </h1>
+
+  <!-- 好物堆：app.js 往这里塞卡片 -->
+  <main class="pile" id="pile" aria-label="好物"></main>
+
+  <button class="again" id="again-btn" type="button">
+    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M7 3v6M12 2v9M17 3v6M5 14l2 3M12 15v4M19 14l-2 3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    再来一场
+  </button>
+
+  <!-- 我喜欢的：右下角的“购物车” -->
+  <button class="likes-btn" id="likes-btn" type="button" aria-label="我喜欢的">
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 21s-7.6-4.7-10.1-9.4C.4 8 2.5 4.5 6.1 4.5c2.1 0 3.6 1.2 4.4 2.6.9-1.4 2.4-2.6 4.5-2.6 3.5 0 5.6 3.5 4.1 7.1C16.9 16.8 12 21 12 21z" fill="currentColor"/></svg>
+    <span class="likes-badge" id="likes-badge" hidden>0</span>
+  </button>
+
+  <section class="likes" id="likes-panel" tabindex="-1" role="dialog" aria-modal="true" aria-label="我喜欢的" hidden>
+    <div class="likes-head">
+      <h2 class="likes-title">我喜欢的</h2>
+      <button class="likes-close" id="likes-close" type="button" aria-label="关闭">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <p class="likes-empty" id="likes-empty">还没有喜欢的好物。<br />回首页戳戳贴纸，把心动的加进来。</p>
+    <ul class="likes-list" id="likes-list"></ul>
+  </section>
+
+  <!-- 详情页：#/pick/<id> -->
+  <section class="detail" id="detail" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="detail-name" hidden>
+    <nav class="bar detail-bar">
+      <a class="back" href="#/" id="back">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        全部好物
+      </a>
+      <p class="bar-count" id="detail-count"></p>
+    </nav>
+
+    <h2 class="detail-name" id="detail-name"></h2>
+
+    <div class="detail-art">
+      <img id="detail-img" alt="" />
+      <span class="stamp" id="detail-stamp" hidden>已喜欢</span>
+    </div>
+
+    <div class="detail-text">
+      <p class="detail-by" id="detail-by"></p>
+      <p class="detail-blurb" id="detail-blurb"></p>
+    </div>
+
+    <div class="detail-actions">
+      <p class="detail-hint">也许你想</p>
+      <div class="links" id="detail-links"></div>
+      <button class="btn btn-like" id="like-btn" type="button">加入喜欢</button>
+      <p class="like-note" id="like-note">喜欢就点一下，我就知道哪些值得多囤几份。</p>
+      <p class="detail-msg" id="detail-msg" role="status" aria-live="polite"></p>
+      <button class="unlike" id="unlike-btn" type="button" hidden>取消喜欢</button>
+    </div>
+  </section>
+
+  <script src="vendor/matter.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

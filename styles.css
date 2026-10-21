@@ -1,0 +1,249 @@
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+:root {
+  --cream: #FAF7E4;        /* 淡奶油黄底 */
+  --blue: #4E7EA3;         /* 灰蓝大字 */
+  --blue-deep: #39628A;
+  --sky: #8FD0F2;          /* 天蓝笔触 */
+  --pink: #F6C9CB;
+  --orange: #D9502E;       /* 橙红点缀 */
+  --ink: #2B2820;
+  --ink-soft: #7A7461;
+  --font-display: "Bagel Fat One", "Noto Sans SC", system-ui, sans-serif;
+  --font-cn: "ZCOOL KuaiLe", "Noto Sans SC", system-ui, -apple-system, "PingFang SC", sans-serif;
+  --shadow: 0 10px 24px rgba(60, 100, 133, .18);
+  --shadow-soft: 0 8px 18px rgba(60, 100, 133, .14);
+}
+
+html { height: 100%; }
+
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-cn);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; border-radius: 999px; }
+
+/* ---------- 背景笔触 ---------- */
+
+.swipes { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.swipe { position: absolute; display: block; border-radius: 999px; filter: blur(1px); }
+.swipe-a { width: 56vw; height: 8vh; left: -10vw; top: 8vh;  background: var(--sky);  opacity: .50; transform: rotate(-13deg); }
+.swipe-b { width: 38vw; height: 6vh; right: -8vw; top: 26vh; background: var(--pink); opacity: .65; transform: rotate(11deg); }
+.swipe-c { width: 48vw; height: 7vh; left: -8vw;  bottom: 10vh; background: var(--sky); opacity: .38; transform: rotate(8deg); }
+
+/* ---------- 顶栏 ---------- */
+
+.bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 4;
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  padding: 14px 16px;
+  font-size: 13px; color: var(--ink-soft);
+}
+.bar-top { pointer-events: none; }
+.bar p { margin: 0; }
+.bar-hint { font-weight: 500; }
+.bar-count { font-weight: 700; color: var(--blue-deep); white-space: nowrap; }
+
+/* ---------- 大字标题 ---------- */
+
+.hero {
+  position: absolute; left: 0; right: 0; margin: 0; padding: 0 14px; z-index: 1;
+  font-family: var(--font-display); font-weight: 400; color: var(--blue);
+  line-height: .8; letter-spacing: -.015em; text-align: center;
+  user-select: none; pointer-events: none;
+}
+.hero-line { display: block; }
+
+/* ---------- 好物堆 ---------- */
+
+.pile { position: fixed; inset: 0; z-index: 2; touch-action: none; }
+
+.gift {
+  position: absolute; top: 0; left: 0; margin: 0; padding: 0;
+  border: 0; border-radius: 0; background: transparent;
+  cursor: grab; appearance: none; -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent; will-change: transform;
+}
+.gift img {
+  display: block; width: 100%; height: 100%; object-fit: contain;
+  pointer-events: none; -webkit-user-drag: none;
+  filter: drop-shadow(0 9px 12px rgba(60, 100, 133, .28));
+}
+.gift.is-liked img {
+  opacity: .62;
+  filter: saturate(.45) drop-shadow(0 6px 9px rgba(60, 100, 133, .18));
+}
+
+.stamp {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-12deg);
+  padding: .14em .55em; border: 3px solid #fff; border-radius: 999px;
+  background: var(--orange); color: #fff; white-space: nowrap;
+  font-family: var(--font-cn); font-weight: 900; font-size: var(--stamp-size, 18px);
+  line-height: 1.1; letter-spacing: .04em;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .18); pointer-events: none;
+}
+
+/* 物理库没加载出来时的兜底排布 */
+.pile.is-static {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 16px; padding: 120px 16px 96px;
+}
+.pile.is-static .gift { position: relative; width: min(30vw, 190px); height: min(30vw, 190px); transform: none; }
+
+/* ---------- 再来一场 ---------- */
+
+.again {
+  position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%); z-index: 5;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 20px; border: 2px solid var(--blue); border-radius: 999px;
+  background: #fff; color: var(--blue-deep); font: 700 14px/1 var(--font-cn);
+  cursor: pointer; box-shadow: var(--shadow-soft); -webkit-tap-highlight-color: transparent;
+}
+.again:active { transform: translateX(-50%) scale(.97); }
+
+/* ---------- 我喜欢的 ---------- */
+
+.likes-btn {
+  position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 5;
+  width: 54px; height: 54px; border: 2px solid var(--blue); border-radius: 999px;
+  background: #fff; color: var(--orange); box-shadow: var(--shadow-soft);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.likes-btn:active { transform: scale(.94); }
+
+.likes-badge {
+  position: absolute; top: -7px; right: -7px;
+  min-width: 22px; height: 22px; padding: 0 5px;
+  border: 2px solid #fff; border-radius: 999px;
+  background: var(--orange); color: #fff;
+  font: 700 12px/18px var(--font-cn); text-align: center; pointer-events: none;
+}
+
+.likes {
+  position: fixed; right: 16px; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); z-index: 6;
+  width: min(92vw, 380px); max-height: min(70vh, 560px); overflow-y: auto;
+  padding: 16px 16px 10px; border-radius: 24px; background: #fff; box-shadow: var(--shadow);
+  outline: none; -webkit-overflow-scrolling: touch;
+}
+
+.likes-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.likes-title { margin: 0; font-size: 20px; font-weight: 700; color: var(--blue-deep); }
+.likes-close {
+  flex: none; padding: 6px; border: 0; background: none; color: var(--ink-soft);
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+
+.likes-empty { margin: 16px 4px 10px; font-size: 14px; line-height: 1.9; color: var(--ink-soft); }
+
+.likes-list { list-style: none; margin: 12px 0 4px; padding: 0; display: grid; gap: 10px; }
+.likes-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 10px; border: 2px solid rgba(78, 126, 163, .16); border-radius: 16px;
+  background: var(--cream); cursor: pointer;
+}
+.likes-item img {
+  flex: none; width: 56px; height: 56px; object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(60, 100, 133, .22)); pointer-events: none;
+}
+.likes-item-text { display: grid; gap: 2px; min-width: 0; }
+.likes-item-name { font-size: 15px; font-weight: 700; color: var(--ink); }
+.likes-item-by { font-size: 12px; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.likes-remove {
+  flex: none; margin-left: auto; padding: 8px; border: 0; background: none;
+  color: var(--ink-soft); font-size: 18px; line-height: 1; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.likes-remove:hover { color: var(--orange); }
+
+/* 特效画布：盖在所有内容上面，但不挡任何点击 */
+#fx { position: fixed; inset: 0; z-index: 30; pointer-events: none; }
+
+/* ---------- 详情页 ---------- */
+
+.detail {
+  position: fixed; inset: 0; z-index: 6; overflow-y: auto; overscroll-behavior: contain;
+  background: var(--cream); outline: none; -webkit-overflow-scrolling: touch;
+  padding: 0 18px calc(40px + env(safe-area-inset-bottom, 0px));
+}
+
+.detail-bar { position: static; padding: 16px 0; }
+
+.back {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--blue-deep); text-decoration: none; font-weight: 700; font-size: 14px;
+}
+.back svg { flex: none; }
+
+/* 站酷快乐体只有 400 一个字重，写 900 会被浏览器“合成加粗”，
+   笔画糊在一起（尤其“毫”“意”这类密笔字），所以这里用原生字重。 */
+.detail-name {
+  width: 100%; margin: 6px 0 0;
+  font-family: var(--font-cn); font-weight: 400; color: var(--blue);
+  line-height: 1; letter-spacing: .02em;
+  text-align: center; /* 短标题受高度限制放大不到满宽时也保持水平居中 */
+}
+.detail-name-text { display: inline-block; }
+
+.detail-art {
+  position: relative; width: min(100%, 420px);
+  margin: calc(var(--name-h, 110px) * -.08) auto 0;
+}
+.detail-art img {
+  display: block; width: 100%; max-height: min(54vh, 520px);
+  object-fit: contain;
+  filter: drop-shadow(0 12px 18px rgba(60, 100, 133, .26));
+}
+.detail-art .stamp { font-size: clamp(20px, 6vw, 32px); }
+
+.detail-text { max-width: 620px; margin: 24px auto 0; }
+.detail-by { margin: 0 0 10px; font-size: 13px; font-weight: 700; letter-spacing: .04em; color: var(--orange); }
+.detail-blurb { margin: 0; font-size: 16px; line-height: 1.8; color: var(--ink); }
+.detail-blurb a { color: var(--blue-deep); font-weight: 600; }
+
+.detail-actions { max-width: 420px; margin: 28px auto 0; }
+.detail-hint { margin: 0 0 12px; text-align: center; font-size: 14px; font-weight: 700; letter-spacing: .14em; color: var(--ink-soft); }
+
+.links { display: grid; gap: 10px; }
+
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+  padding: 16px 20px; border: 2px solid var(--blue); border-radius: 999px;
+  background: #fff; color: var(--blue-deep); font: 700 16px/1 var(--font-cn);
+  text-decoration: none; cursor: pointer; transition: transform .12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn svg { flex: none; }
+.btn:active { transform: scale(.98); }
+.btn-like { margin-top: 10px; border-color: var(--orange); background: var(--orange); color: #fff; }
+
+.like-note { margin: 12px 0 0; text-align: center; font-size: 12.5px; line-height: 1.6; color: var(--ink-soft); }
+.detail-msg { margin: 14px 0 0; text-align: center; font-size: 14px; font-weight: 700; color: var(--orange); }
+
+.unlike {
+  display: block; margin: 12px auto 0; padding: 4px 8px;
+  border: 0; background: none; color: var(--ink-soft);
+  font: 500 13px/1 var(--font-cn); text-decoration: underline; cursor: pointer;
+}
+
+/* ---------- 宽屏 ---------- */
+
+@media (min-width: 900px) {
+  .bar { padding: 18px 32px; }
+  .hero { padding: 0 32px; }
+  .detail { padding: 0 32px 64px; }
+  .detail-bar { padding: 22px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn, .again { transition: none; }
+}
